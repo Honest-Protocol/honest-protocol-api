@@ -1,23 +1,30 @@
 {
-  "name": "honest-protocol-api",
+  "name": "rest-template",
   "version": "1.0.0",
-  "description": "",
+  "description": "Template for Node.js RestAPIS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Honest-Protocol/honest-protocol-api.git"
+    "url": "git+https://github.com/lorenzhohmann/rest-template.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "LH",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Honest-Protocol/honest-protocol-api/issues"
+    "url": "https://github.com/lorenzhohmann/rest-template/issues"
   },
-  "homepage": "https://github.com/Honest-Protocol/honest-protocol-api#readme",
+  "homepage": "https://github.com/lorenzhohmann/rest-template#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "web3": "^1.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
