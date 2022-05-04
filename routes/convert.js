@@ -18,9 +18,17 @@ router.get("/get-label-index-mappings", async (req, res) => {
 
 // REQUIRES that the request body contain a map with the keys:
 // "values" and "labels".
-router.post("/label-arrays-to-json", (req, res) => {
-  let labels = req.body.labels;
-  let values = req.body.values;
+router.get("/label-arrays-to-json", (req, res) => {
+  const query = req.query;
+  if (!('labels' in query)) {
+    sendError(res, 'request params must have a LABELS field which is an array.');
+  }
+  if (!('values' in query)) {
+    sendError(res, 'request params must have a VALUES field which is an array.');
+  }
+
+  let labels = req.query.labels;
+  let values = req.query.values;
 
   if (labels == null || values == null) {
     sendError(res, 'Ensure both LABELS and VALUES are defined.');
