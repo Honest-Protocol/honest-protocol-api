@@ -58,5 +58,11 @@ router.get("/has-audits/:asset", async (req, res) => {
 
 });
 
+router.get('/all', async (req, res) => {
+  const audited = await LABEL_CONTRACT.getPastEvents('NewAuditedAsset', { fromBlock: 0, toBlock: 'latest' });
+  const addresses = audited.map(({ returnValues }) => returnValues.asset)
+  sendResponse(res, addresses);
+})
+
 
 module.exports = router;
