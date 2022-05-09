@@ -42,18 +42,18 @@ const bitarraysToJSON = async (labelsBits, valuesBits) => {
 const getJSONFilterResults = async (filter, nft) => {
     const filterContract = getFilterContract(filter);
     let missed = await filterContract.methods.getMissedCriteria(nft).call();
-    let unknowns = await filterContract.methods.getUnknowns(nft).call();
+    let audits = await LABEL_CONTRACT.methods.auditedLabels(nft).call();
     let labelsRequired = await filterContract.methods.labelsRequired().call();
     const { indexToLabel } = await labelIndexMappings();
     const results = {};
-    for (let i = 0; labelsRequired > 0; missed >>= 1, labelsRequired >>= 1, unknowns >>= 1, i++) {
+    for (let i = 0; labelsRequired > 0; missed >>= 1, labelsRequired >>= 1, audits >>= 1, i++) {
         if (labelsRequired % 2 == 1) {
             //required 
             const label = indexToLabel[String(i)];
             if (missed % 2 == 0) {
                 // passed
                 results[label] = true;
-            } else if (missed % 2 == 1 && unknowns % 2 == 0) {
+            } else if (missed % 2 == 1 && audits % 2 == 1) {
                 // missed 
                 results[label] = false;
             } else {

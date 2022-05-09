@@ -45,8 +45,8 @@ router.get("/has-audits/:asset", async (req, res) => {
   }
 
   try {
-    const proofs = await LABEL_CONTRACT.methods.getProofs(assetAddress).call();
-    if (proofs.length) {
+    const audited = await LABEL_CONTRACT.methods.auditedLabels(assetAddress).call();
+    if (audited > 0) {
       sendResponse(res, true);
       return;
     }
