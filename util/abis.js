@@ -2,7 +2,7 @@ const Web3 = require('web3');
 
 // Contract Interface Code
 // =========================================================
-const web3 = new Web3(new Web3.providers.WebsocketProvider(process.env.SOCKETURL));
+const web3 = new Web3(new Web3.providers.WebsocketProvider('wss://eth-rinkeby.alchemyapi.io/v2/M5kkVgbGSQxEIVtJ_dDNW6UAK5WJ0I3Q'));
 
 // =============================================================================
 //         ABIs and Contract Addresses: Paste Your ABIs/Addresses Here

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/lorenzhohmann/rest-template#readme",
   "dependencies": {
+    "@defi-wonderland/smock": "^2.0.7",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dotenv": "^9.0.2",
@@ -25,6 +26,8 @@
     "web3": "^1.7.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "assert": "^2.0.0",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.2.3"
   }
 }
