@@ -1,5 +1,6 @@
 const Web3 = require('web3');
-const { LABEL_CONTRACT, web3, FILTER_ABI, FACTORY_CONTRACT } = require('../util/abis.js')
+const { LABEL_CONTRACT, web3, FILTER_ABI, FACTORY_CONTRACT, LABEL_ADDRESS } = require('../util/abis.js')
+const { MockLabelContract } = require('../tests/mockContracts');
 
 function sendResponse(res, msg) {
     res.status(200).send(msg);
@@ -83,9 +84,9 @@ const JSONtoBitarrays = async (requirements) => {
     return { labelsRequired, valuesRequired };
 }
 
-const labelIndexMappings = async () => {
-    let label_list = await LABEL_CONTRACT.methods.getAllLabels().call();
+const labelIndexMappings = async (mockAllLabels = undefined) => {
 
+    let label_list = mockAllLabels ? mockAllLabels : await LABEL_CONTRACT.methods.getAllLabels().call();
     // Build label_to_index and index_to_label
     let label_to_index = {};
     let index_to_label = {};

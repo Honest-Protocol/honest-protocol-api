@@ -19,6 +19,7 @@
   "dependencies": {
     "@defi-wonderland/smock": "^2.0.7",
     "axios": "^0.27.2",
+    "chai": "^4.3.6",
     "cors": "^2.8.5",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
@@ -26,7 +27,10 @@
     "web3": "^1.7.3"
   },
   "devDependencies": {
+    "@eth-optimism/smock": "^1.1.10",
     "assert": "^2.0.0",
+    "ethereum-waffle": "^3.4.4",
+    "hardhat": "^2.9.6",
     "nodemon": "^2.0.7",
     "supertest": "^6.2.3"
   }

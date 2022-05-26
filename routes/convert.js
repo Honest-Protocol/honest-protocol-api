@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
 // 2) Index-to-Label map
 // devs need this to create a new filter 
 router.get("/get-label-index-mappings", async (req, res) => {
-  const result = await labelIndexMappings();
+  const result = await labelIndexMappings(JSON.parse(req.query.mockAllLabels));
   sendResponse(res, result);
 });
 

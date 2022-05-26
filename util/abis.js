@@ -678,6 +678,6 @@ const FACTORY_CONTRACT = new web3.eth.Contract(FACTORY_ABI, FACTORY_ADDRESS);
 module.exports = {
     LABEL_CONTRACT,
     FACTORY_CONTRACT,
-    FILTER_ABI,
-    web3
+    FILTER_ABI, LABEL_ABI,
+    web3, LABEL_ADDRESS,
 }
