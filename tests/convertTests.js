@@ -14,8 +14,8 @@ const getLabelIndexMappings = (app) => describe('GET /get-label-index-mappings',
             .get(`/api/convert/get-label-index-mappings?mockAllLabels=${JSON.stringify(['gas', 'commitReveal'])}`)
             .set('Accept', 'application/json')
         assert.equal(response.status, 200);
-        assert.equal(JSON.stringify(response.body), JSON.stringify(expected));
-    }).timeout(2000);
+        assert.equal(JSON.stringify(response.body), JSON.stringify(expected)); //for object comparison 
+    });
 })
 
 const labelArraysToJson = (app) => describe('GET /label-arrays-to-json', () => {
