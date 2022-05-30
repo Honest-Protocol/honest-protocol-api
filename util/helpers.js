@@ -40,13 +40,16 @@ const bitarraysToJSON = async (labelsBits, valuesBits) => {
 
 }
 
-const getJSONFilterResults = async (filter, nft) => {
+const getJSONFilterResults = async (filter, nft, mockData = undefined) => {
+
+    let mockParsed = mockData ? JSON.parse(mockData) : undefined;
     const filterContract = getFilterContract(filter);
-    let missed = await filterContract.methods.getMissedCriteria(nft).call();
-    let audits = await LABEL_CONTRACT.methods.auditedLabels(nft).call();
-    let labelsRequired = await filterContract.methods.labelsRequired().call();
-    const { indexToLabel } = await labelIndexMappings();
+    let missed = mockData ? mockParsed.missed : await filterContract.methods.getMissedCriteria(nft).call();
+    let audits = mockData ? mockParsed.audits : await LABEL_CONTRACT.methods.auditedLabels(nft).call();
+    let labelsRequired = mockData ? mockParsed.labelsRequired : await filterContract.methods.labelsRequired().call();
+    const { indexToLabel } = await labelIndexMappings(JSON.stringify(mockParsed.mockAllLabels));
     const results = {};
+
     for (let i = 0; labelsRequired > 0; missed >>= 1, labelsRequired >>= 1, audits >>= 1, i++) {
         if (labelsRequired % 2 == 1) {
             //required 
@@ -67,8 +70,9 @@ const getJSONFilterResults = async (filter, nft) => {
     return results;
 }
 
-const JSONtoBitarrays = async (requirements) => {
-    const { labelToIndex } = await labelIndexMappings();
+const JSONtoBitarrays = async (requirements, mockAllLabels = undefined) => {
+    const { labelToIndex } = await labelIndexMappings(mockAllLabels);
+
     let labelsRequired = 0;
     let valuesRequired = 0;
     for (const [label, value] of Object.entries(requirements)) {
@@ -86,7 +90,7 @@ const JSONtoBitarrays = async (requirements) => {
 
 const labelIndexMappings = async (mockAllLabels = undefined) => {
 
-    let label_list = mockAllLabels ? mockAllLabels : await LABEL_CONTRACT.methods.getAllLabels().call();
+    let label_list = mockAllLabels ? JSON.parse(mockAllLabels) : await LABEL_CONTRACT.methods.getAllLabels().call();
     // Build label_to_index and index_to_label
     let label_to_index = {};
     let index_to_label = {};

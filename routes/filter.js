@@ -83,12 +83,21 @@ router.get('/get-criteria-values-through-filter/:asset/:filter', async (req, res
         sendError(res, 'Make sure addresses are valid.');
         return;
     }
-    if (!await isFilter(filter)) {
-        sendError(res, 'Make sure filter address is the address of a real filter.');
-        return;
+    const mockData = req.query.mockData;
+    if (!mockData) {
+        if (!await isFilter(filter)) {
+            sendError(res, 'Make sure filter address is the address of a real filter.');
+            return;
+        }
     }
-    const json = await getJSONFilterResults(filter, asset);
-    sendResponse(res, json);
+
+    if (mockData) {
+        const json = await getJSONFilterResults(asset, filter, mockData)
+        sendResponse(res, json);
+    } else {
+        const json = await getJSONFilterResults(filter, asset);
+        sendResponse(res, json);
+    }
 
 })
 

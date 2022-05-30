@@ -31,14 +31,10 @@ router.get("/get-label-values/:asset", async (req, res) => {
   catch (err) {
     sendError(res, 'invalid asset address.');
   }
-
-
-
-
 });
 
-router.get("/has-audits/:asset", async (req, res) => {
-  const assetAddress = req.params.asset;
+router.get("/has-audits", async (req, res) => {
+  const assetAddress = req.query.asset;
   if (!assetAddress) {
     sendError(res, 'please supply an asset address.');
     return;
