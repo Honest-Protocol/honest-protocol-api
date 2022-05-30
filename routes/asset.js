@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { sendResponse, sendError, bitarraysToJSON } = require('../util/helpers.js');
+const { sendResponse, sendError, bitarraysToJSON, normalizeAddress, isValidAddress } = require('../util/helpers.js');
 const { LABEL_CONTRACT } = require('../util/abis');
 // const db = require("../lib/database.js");
 
@@ -8,15 +8,17 @@ const { LABEL_CONTRACT } = require('../util/abis');
 
 router.get("/get-label-values/:asset", async (req, res) => {
   const assetAddress = req.params.asset;
+  let { mockGetProofs, mockGetLabelData, mockAllLabels } = req.query;
   if (!assetAddress) {
-    sendError(res, 'please supply an asset address.');
+    sendError(res, 'please supply an asset address in the query parameters.');
     return;
   }
-
   try {
-    const proofs = await LABEL_CONTRACT.methods.getProofs(assetAddress).call();
-    const labelData = Number(await LABEL_CONTRACT.methods.getLabelData(assetAddress).call());
+    const proofs = mockGetProofs ? JSON.parse(mockGetProofs) : await LABEL_CONTRACT.methods.getProofs(assetAddress).call();
+
+    const labelData = mockGetLabelData ? JSON.parse(mockGetLabelData) : Number(await LABEL_CONTRACT.methods.getLabelData(assetAddress).call());
     let auditedBitarray = 0;
+
     for (let i = proofs.length - 1; i >= 0; i--) {
       auditedBitarray <<= 1;
       let proof = proofs[i];
@@ -25,7 +27,8 @@ router.get("/get-label-values/:asset", async (req, res) => {
         auditedBitarray += 1;
       }
     }
-    const result = await bitarraysToJSON(auditedBitarray, labelData);
+
+    const result = await bitarraysToJSON(auditedBitarray, labelData, mockAllLabels);
     sendResponse(res, result);
   }
   catch (err) {
@@ -33,8 +36,8 @@ router.get("/get-label-values/:asset", async (req, res) => {
   }
 });
 
-router.get("/has-audits", async (req, res) => {
-  const assetAddress = req.query.asset;
+router.get("/has-audits/:asset", async (req, res) => {
+  const assetAddress = req.params.asset;
   if (!assetAddress) {
     sendError(res, 'please supply an asset address.');
     return;

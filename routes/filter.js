@@ -10,11 +10,6 @@ const { sendResponse,
 } = require('../util/helpers.js');
 const { FACTORY_CONTRACT, } = require('../util/abis.js')
 
-// request is /api/user
-
-router.get("/", (req, res) => {
-    res.status(200).send("FILTER");
-});
 
 router.get("/get/:filterAddress", async (req, res) => {
     const { filterAddress } = req.params;
@@ -23,7 +18,7 @@ router.get("/get/:filterAddress", async (req, res) => {
         return;
     }
     if (!await isFilter(filterAddress)) {
-        sendResponse(res, { filterExists: false, msg: `filter does not exist at address ${filterAddress}.` });
+        sendError(res, { filterExists: false, msg: `filter does not exist at address ${filterAddress}.` });
         return;
     }
     const { requirements, name } = await getFilterInfo(filterAddress);
@@ -85,7 +80,7 @@ router.get('/get-criteria-values-through-filter/:asset/:filter', async (req, res
     }
     const mockData = req.query.mockData;
     if (!mockData) {
-        if (!await isFilter(filter)) {
+        if (!(await isFilter(filter))) {
             sendError(res, 'Make sure filter address is the address of a real filter.');
             return;
         }

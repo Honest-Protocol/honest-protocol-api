@@ -24,11 +24,11 @@ function normalizeAddress(addr) {
 
 /////////// CONVERSIONS /////////////
 
-const bitarraysToJSON = async (labelsBits, valuesBits) => {
+const bitarraysToJSON = async (labelsBits, valuesBits, mockAllLabels = undefined) => {
     if (isNaN(labelsBits) || isNaN(valuesBits)) throw "inputs must be numbers.";
     labelsBits = Number(labelsBits);
     valuesBits = Number(valuesBits);
-    const { indexToLabel } = await labelIndexMappings();
+    const { indexToLabel } = await labelIndexMappings(mockAllLabels);
     const requirements = {};
     for (let i = 0; labelsBits > 0; labelsBits >>= 1, valuesBits >>= 1, i++) {
         if (labelsBits % 2 == 1) {
