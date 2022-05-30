@@ -6,7 +6,7 @@ const request = require('supertest');
 
 const getLabelIndexMappings = (app) => describe('GET /get-label-index-mappings', () => {
 
-    it('test', async () => {
+    it('logic is correct', async () => {
 
         const expected = { labelToIndex: { 'gas': 0, 'commitReveal': 1 }, indexToLabel: { 0: 'gas', 1: 'commitReveal' } };
 
@@ -16,6 +16,15 @@ const getLabelIndexMappings = (app) => describe('GET /get-label-index-mappings',
         assert.equal(response.status, 200);
         assert.equal(JSON.stringify(response.body), JSON.stringify(expected)); //for object comparison 
     });
+
+    it('calls contract successfully and returns correct format', async () => {
+        const response = await request(app)
+            .get(`/api/convert/get-label-index-mappings`)
+            .set('Accept', 'application/json')
+        assert.equal(response.status, 200);
+        assert.equal(typeof (response.body.labelToIndex), 'object');
+        assert.equal(typeof (response.body.indexToLabel), 'object')
+    })
 })
 
 const labelArraysToJson = (app) => describe('GET /label-arrays-to-json', () => {
